@@ -210,7 +210,13 @@
         projects.push({ id: doc.id, ...doc.data() });
       });
 
-      const displayProjects = projects.slice(0, 3);
+      // Shuffle projects randomly
+      for (let i = projects.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [projects[i], projects[j]] = [projects[j], projects[i]];
+      }
+
+      const displayProjects = projects.slice(0, 4);
       renderTiles(displayProjects);
 
       if (tilesLoading) tilesLoading.style.display = 'none';

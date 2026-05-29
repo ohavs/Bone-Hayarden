@@ -263,8 +263,8 @@
       }
       
       closeBtn.addEventListener('click', closeLightbox);
-      nextBtn.addEventListener('click', showNext);
-      prevBtn.addEventListener('click', showPrev);
+      nextBtn.addEventListener('click', showPrev); // right side triggers previous
+      prevBtn.addEventListener('click', showNext); // left side triggers next
       
       lightbox.addEventListener('click', (e) => {
         if (e.target === lightbox || e.target === lightbox.querySelector('.lightbox__content')) {
@@ -275,8 +275,8 @@
       document.addEventListener('keydown', (e) => {
         if (!lightbox.classList.contains('open')) return;
         if (e.key === 'Escape') closeLightbox();
-        if (e.key === 'ArrowRight') showNext(); // Next is right
-        if (e.key === 'ArrowLeft') showPrev(); // Prev is left
+        if (e.key === 'ArrowRight') showPrev(); // Right arrow is Prev
+        if (e.key === 'ArrowLeft') showNext();  // Left arrow is Next
       });
     }
   })();
@@ -285,11 +285,11 @@
   <!-- Lightbox Overlay -->
   <div class="lightbox" id="lightbox" aria-hidden="true" role="dialog">
     <button class="lightbox__btn lightbox__close" id="lightboxClose" aria-label="סגור גלריה">&times;</button>
-    <button class="lightbox__btn lightbox__prev" id="lightboxPrev" aria-label="תמונה קודמת">&#8249;</button>
+    <button class="lightbox__btn lightbox__prev" id="lightboxPrev" aria-label="תמונה הבאה">&#8249;</button>
     <div class="lightbox__content">
       <img src="" id="lightboxImg" alt="תמונה מוגדלת">
     </div>
-    <button class="lightbox__btn lightbox__next" id="lightboxNext" aria-label="תמונה הבאה">&#8250;</button>
+    <button class="lightbox__btn lightbox__next" id="lightboxNext" aria-label="תמונה קודמת">&#8250;</button>
   </div>
 </body>
 </html>
