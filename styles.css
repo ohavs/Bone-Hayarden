@@ -256,9 +256,12 @@ img { display: block; max-width: 100%; height: auto; }
    TILES / PROJECTS
    ══════════════════════════════════════════════════════════════════ */
 .tiles { padding-top: 5rem; padding-bottom: 5rem; }
+#projects .container {
+  max-width: 1600px;
+}
 .tiles__items {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 1.375rem;
 }
 .tiles__more { text-align: center; margin-top: 2.5rem; }
@@ -266,7 +269,7 @@ img { display: block; max-width: 100%; height: auto; }
 /* Loading skeleton */
 .tiles__loading {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 1.375rem;
 }
 .tile-skeleton {
