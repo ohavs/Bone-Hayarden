@@ -216,7 +216,7 @@
         [projects[i], projects[j]] = [projects[j], projects[i]];
       }
 
-      const displayProjects = projects.slice(0, 4);
+      const displayProjects = projects.slice(0, 5);
       renderTiles(displayProjects);
 
       if (tilesLoading) tilesLoading.style.display = 'none';
