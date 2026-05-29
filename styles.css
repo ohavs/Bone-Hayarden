@@ -41,7 +41,11 @@
 
 /* ── Reset ── */
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-html { direction: rtl; }
+html {
+  direction: rtl;
+  overflow-x: hidden;
+  max-width: 100%;
+}
 body {
   font-family: var(--font-body);
   font-weight: 400;
@@ -49,6 +53,7 @@ body {
   background-color: var(--color-cream-900);
   line-height: 1.6;
   overflow-x: hidden;
+  max-width: 100%;
   -webkit-font-smoothing: antialiased;
   font-size: 16px;
 }
