@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>בונה הירדן המערבי | בניית וילות ובתים פרטיים</title>
+  <meta name="description" content="בונה הירדן המערבי — חברת בנייה מובילה לבניית וילות יוקרה, בתים פרטיים ודו-משפחתיים בסטנדרט הגבוה ביותר.">
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- ═══ MOBILE OVERLAY ═══ -->
+  <div class="mobile-overlay" id="mobileOverlay">
+    <nav class="mobile-overlay__nav">
+      <a href="projects.html" class="mobile-overlay__link">פרויקטים</a>
+      <a href="#about" class="mobile-overlay__link">אודותינו</a>
+      <a href="#company" class="mobile-overlay__link">על החברה</a>
+      <a href="#services" class="mobile-overlay__link">שירותים</a>
+      <a href="#services" class="mobile-overlay__link">תיבת נוח</a>
+      <a href="#location" class="mobile-overlay__link">צרו קשר</a>
+    </nav>
+    <div class="mobile-overlay__social">
+      <a href="#">פייסבוק</a>
+      <a href="#">אינסטגרם</a>
+      <a href="#">לינקדאין</a>
+    </div>
+  </div>
+
+  <!-- ═══ HEADER — Transparent → Solid ═══ -->
+  <header class="header header--transparent" id="header">
+    <div class="header__inner">
+      <a href="#" class="header__logo">בונה הירדן המערבי</a>
+      <nav class="header__nav">
+        <ul class="header__nav-list">
+          <li><a href="projects.html" class="header__nav-link" data-section="projects">פרויקטים</a></li>
+          <li><a href="#about" class="header__nav-link" data-section="about">אודותינו</a></li>
+          <li><a href="#company" class="header__nav-link" data-section="company">על החברה</a></li>
+          <li><a href="#services" class="header__nav-link" data-section="services">שירותים</a></li>
+          <li><a href="#location" class="header__nav-link" data-section="location">צרו קשר</a></li>
+        </ul>
+      </nav>
+      <a href="#location" class="btn btn--primary header__cta">דברו איתנו</a>
+      <button class="header__toggler" id="menuToggle" aria-label="תפריט">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ═══ HERO ═══ -->
+  <section class="hero" id="hero">
+    <div class="container hero__content">
+      <h1 class="hero__heading" data-aos="fade-up" data-aos-duration="1000">
+        בונים איכות,<br>יוצרים יוקרה
+      </h1>
+      <p class="hero__description" data-aos="fade-up" data-aos-delay="200" data-aos-duration="1000">
+        מעל 15 שנות מצוינות הנדסית בבניית וילות פרטיות.<br>
+        בונה הירדן המערבי — הכתובת לבית הבא שלכם.
+      </p>
+      <div class="hero__cta-row" data-aos="fade-up" data-aos-delay="400" data-aos-duration="1000">
+        <a href="#projects" class="btn btn--hero">הפרויקטים שלנו ←</a>
+        <a href="#location" class="btn btn--hero-outline">דברו איתנו</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ PROJECTS / TILES (loaded from Firestore) ═══ -->
+  <section class="tiles" id="projects">
+    <div class="container">
+      <div class="tiles__loading" id="tilesLoading">
+        <div class="tile-skeleton"><div class="tile-skeleton__img"></div><div class="tile-skeleton__text"></div><div class="tile-skeleton__text tile-skeleton__text--short"></div></div>
+        <div class="tile-skeleton"><div class="tile-skeleton__img"></div><div class="tile-skeleton__text"></div><div class="tile-skeleton__text tile-skeleton__text--short"></div></div>
+        <div class="tile-skeleton"><div class="tile-skeleton__img"></div><div class="tile-skeleton__text"></div><div class="tile-skeleton__text tile-skeleton__text--short"></div></div>
+      </div>
+      <div class="tiles__items" id="tilesContainer" style="display:none"></div>
+      <div class="tiles__more" data-aos="fade-up" data-aos-delay="300">
+        <a href="projects.html" class="btn btn--primary btn--large">לכל הפרויקטים ←</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ ABOUT / אודותינו ═══ -->
+  <section class="about" id="about">
+    <div class="container">
+      <div class="about__grid">
+        <div class="about__image" data-aos="fade-left" data-aos-duration="1000">
+          <img src="images/about_image.png" alt="איכות בנייה — פרט אדריכלי">
+        </div>
+        <div class="about__content">
+          <p class="about__label" data-aos="fade-up">אודותינו</p>
+          <h2 class="about__heading" data-aos="fade-up" data-aos-delay="100">
+            מהנדסים את המחר,<br>בונים לדורות
+          </h2>
+          <p class="about__text" data-aos="fade-up" data-aos-delay="200">
+            חברת בונה הירדן המערבי יוצרת תרבות מגורים חדשה המשלבת מצוינות הנדסית עם חזון אדריכלי פורץ דרך. עבורנו, כל וילה היא יצירה חד-פעמית והזדמנות להעניק לכם איכות חיים יוצאת דופן. יחד עם צוות מהנדסים ואדריכלים מהשורה הראשונה, אנו מובילים פתרונות בנייה מתקדמים המפגישים עיצוב עכשווי ומרהיב עם עמידות הנדסית חסרת פשרות.
+          </p>
+          <div class="about__stats" data-aos="fade-up" data-aos-delay="300">
+            <div class="stat"><div class="stat__number">+15</div><div class="stat__label">שנות ניסיון</div></div>
+            <div class="stat"><div class="stat__number">+3,500</div><div class="stat__label">מ"ר של יוקרה</div></div>
+            <div class="stat"><div class="stat__number">100%</div><div class="stat__label">אמינות ועמידה בזמנים</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ על החברה (REVERSED) ═══ -->
+  <section class="about about--reversed" id="company">
+    <div class="container">
+      <div class="about__grid">
+        <div class="about__image" data-aos="fade-right" data-aos-duration="1000">
+          <img src="images/hero_building.png" alt="פרויקט בנייה — בונה הירדן המערבי">
+        </div>
+        <div class="about__content">
+          <p class="about__label" data-aos="fade-up">על החברה</p>
+          <h2 class="about__heading" data-aos="fade-up" data-aos-delay="100">
+            חזון, מקצועיות<br>ומחויבות ללקוח
+          </h2>
+          <p class="about__text" data-aos="fade-up" data-aos-delay="200">
+            בונה הירדן המערבי נוסדה מתוך אמונה שבנייה איכותית מתחילה 
+            באנשים. אנו מעסיקים צוות מהנדסים, אדריכלים ומנהלי פרויקטים 
+            בעלי ניסיון רב, שכל אחד מביא מומחיות ייחודית. 
+            מהתכנון ועד למסירת המפתח, אנו מלווים כל פרויקט בהקפדה 
+            מלאה על לוחות זמנים, תקציב ואיכות בנייה.
+          </p>
+          <p class="about__text" data-aos="fade-up" data-aos-delay="250" style="margin-bottom:0">
+            הגישה שלנו משלבת טכנולוגיות בנייה מתקדמות עם תשומת לב 
+            לפרטים הקטנים — משטחי גמר ועד תכנון נופי. התוצאה: בתים 
+            שלא רק נראים טוב, אלא גם מרגישים כמו בית.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ שירותים — Editorial list ═══ -->
+  <section class="services" id="services">
+    <div class="container">
+      <div class="services__header">
+        <span class="services__label" data-aos="fade-up">מה אנחנו מציעים</span>
+        <h2 class="services__heading" data-aos="fade-up" data-aos-delay="100">השירותים שלנו</h2>
+      </div>
+      <div class="services__list">
+        <!-- שירות 01 -->
+        <div class="service-item" data-aos="fade-up" data-aos-delay="0">
+          <div class="service-row" tabindex="0" role="button" aria-expanded="false" aria-label="בנייה למגורים">
+            <span class="service-row__num">01</span>
+            <div class="service-row__content">
+              <h3 class="service-row__title">בנייה למגורים</h3>
+              <p class="service-row__text">תכנון ובנייה של בתים חד-משפחתיים ודו-משפחתיים בסטנדרט הגבוה ביותר — משלב התכנון ועד למסירת המפתח.</p>
+            </div>
+            <div class="service-row__arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg></div>
+          </div>
+          <div class="service-row__drawer">
+            <div class="service-row__drawer-inner">
+              <div class="service-drawer__details">
+                <ul class="service-drawer__bullets">
+                  <li>תכנון אדריכלי והנדסי מתקדם ומותאם אישית</li>
+                  <li>בניית בתי יוקרה, דו-משפחתיים</li>
+                  <li>מפרט טכני עשיר, יוקרתי ומקיף לכל וילה</li>
+                  <li>עבודה עם חומרי הגלם המובילים והעמידים ביותר בשוק</li>
+                  <li>פיקוח הנדסי צמוד, עמידה בלוחות זמנים ומסירת מפתח מלאה</li>
+                </ul>
+              </div>
+              <div class="service-drawer__image">
+                <img src="images/hero_building.png" alt="בנייה למגורים - בונה הירדן המערבי" loading="lazy">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- שירות 02 -->
+        <div class="service-item" data-aos="fade-up" data-aos-delay="80">
+          <div class="service-row" tabindex="0" role="button" aria-expanded="false" aria-label="גמרים ומפרטי פרימיום">
+            <span class="service-row__num">02</span>
+            <div class="service-row__content">
+              <h3 class="service-row__title">גמרים ומפרטי פרימיום</h3>
+              <p class="service-row__text">ביצוע עבודות גמר ברמת אומנות, חיפויים ייחודיים ומפרטים עשירים המותאמים במיוחד לבתים פרטיים וילות יוקרה.</p>
+            </div>
+            <div class="service-row__arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg></div>
+          </div>
+          <div class="service-row__drawer">
+            <div class="service-row__drawer-inner">
+              <div class="service-drawer__details">
+                <ul class="service-drawer__bullets">
+                  <li>עבודה עם חומרים יוקרתיים ושיטות גמר מתקדמות מהשורה הראשונה</li>
+                  <li>חיפויים אומנותיים, ריצופים מיוחדים ועבודות נגרות מותאמות אישית</li>
+                  <li>פיקוח הדוק וביצוע מוקפד של כל פרט אדריכלי להבטחת שלמות</li>
+                  <li>תיאום צמוד עם מעצבי הפנים שלכם למימוש החזון העיצובי</li>
+                  <li>אחריות מקיפה ושירות בדק קפדני ללא פשרות לאחר המסירה</li>
+                </ul>
+              </div>
+              <div class="service-drawer__image">
+                <img src="images/project_3.png" alt="גמרים ומפרטי פרימיום - בונה הירדן המערבי" loading="lazy">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- שירות 03 -->
+        <div class="service-item" data-aos="fade-up" data-aos-delay="160">
+          <div class="service-row" tabindex="0" role="button" aria-expanded="false" aria-label="ניהול ופיקוח הנדסי">
+            <span class="service-row__num">03</span>
+            <div class="service-row__content">
+              <h3 class="service-row__title">ניהול ופיקוח הנדסי</h3>
+              <p class="service-row__text">ניהול וליווי הנדסי מלא של פרויקטי בנייה פרטיים משלב רישוי הבנייה ועד לטופס 4, לראש שקט מלא שלכם.</p>
+            </div>
+            <div class="service-row__arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg></div>
+          </div>
+          <div class="service-row__drawer">
+            <div class="service-row__drawer-inner">
+              <div class="service-drawer__details">
+                <ul class="service-drawer__bullets">
+                  <li>ליווי הנדסי צמוד החל משלבי התכנון ורישוי הבנייה מול הרשויות</li>
+                  <li>פיקוח מקיף על קבלני המשנה וספקי החומרים בשטח</li>
+                  <li>בקרה הדוקה על עמידה בתקציב ובלוחות הזמנים המוגדרים</li>
+                  <li>ניהול סיכונים הנדסיים ופתרון בעיות בזמן אמת</li>
+                  <li>ניהול הבטיחות באתר הבנייה והכנת המסמכים לקראת קבלת טופס 4</li>
+                </ul>
+              </div>
+              <div class="service-drawer__image">
+                <img src="images/project_2.png" alt="ניהול ופיקוח הנדסי - בונה הירדן המערבי" loading="lazy">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- שירות 04 -->
+        <div class="service-item" data-aos="fade-up" data-aos-delay="240">
+          <div class="service-row" tabindex="0" role="button" aria-expanded="false" aria-label="תיבת נוח">
+            <span class="service-row__num">04</span>
+            <div class="service-row__content">
+              <h3 class="service-row__title">תיבת נוח</h3>
+              <p class="service-row__text">פתרון מרחב מוגן מהיר, איכותי ובמחיר נגיש. התקנה מהירה וביצוע מקצועי.</p>
+            </div>
+            <div class="service-row__arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg></div>
+          </div>
+          <div class="service-row__drawer">
+            <div class="service-row__drawer-inner service-row__drawer-inner--noah">
+              <!-- Right Side: Details & Steps -->
+              <div class="service-drawer__details">
+                <span class="service-drawer__label">מה נדרש</span>
+                <h4 class="service-drawer__title">אישור בדיקת טיח ממ"ד</h4>
+                <p class="service-drawer__desc">
+                  לביצוע ההתקנה וטופס 4 נדרש אישור בדיקת טיח ממ"ד שנערך על ידי מעבדה מוסמכת. ניתן לבצע דרך <strong>איזיטופ</strong> או <strong>סיסטם</strong>.
+                </p>
+                <p class="service-drawer__desc" style="margin-bottom: 2rem;">
+                  את האישור שולחים אלינו בוואטסאפ לאחר השארת הפרטים.
+                </p>
+                
+                <ul class="service-drawer__steps">
+                  <li>
+                    <span class="step-num">01</span>
+                    <span class="step-text">פנו לאיזיטופ או סיסטם לבדיקת טיח הממ"ד</span>
+                  </li>
+                  <li>
+                    <span class="step-num">02</span>
+                    <span class="step-text"><a href="#location" class="step-link">השאירו פרטים בטופס</a> — נחזור אליכם</span>
+                  </li>
+                  <li>
+                    <span class="step-num">03</span>
+                    <span class="step-text">שלחו את אישור הבדיקה בוואטסאפ</span>
+                  </li>
+                  <li>
+                    <span class="step-num">04</span>
+                    <span class="step-text">נתאם התקנה ונטפל בטופס 4</span>
+                  </li>
+                </ul>
+              </div>
+              <!-- Left Side: Image & CTAs -->
+              <div class="service-drawer__media">
+                <div class="service-drawer__image">
+                  <img src="images/about_image.png" alt="תיבת נוח מרחב מוגן - בונה הירדן המערבי" loading="lazy">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ המיקום שלנו וצור קשר ═══ -->
+  <section class="location-section" id="location" data-aos="fade-up">
+    <div class="container">
+      <div class="location-section__header">
+        <span class="location-section__label">צרו קשר</span>
+        <h2 class="location-section__heading">איפה למצוא אותנו</h2>
+      </div>
+      
+      <div class="location-section__grid">
+        <!-- Right Column: Contact Form -->
+        <div class="location-section__contact">
+          <h3 class="location-section__contact-title">השאירו פרטים ונחזור אליכם בהקדם</h3>
+          <form class="location-section__form" id="contactForm">
+            <div class="form-field">
+              <label class="form-field__label" for="contactName">שם מלא</label>
+              <input class="form-field__input" type="text" id="contactName" placeholder="ישראל ישראלי" required>
+            </div>
+            <div class="form-field">
+              <label class="form-field__label" for="contactPhone">טלפון</label>
+              <input class="form-field__input" type="tel" id="contactPhone" placeholder="050-000-0000" required>
+            </div>
+            <div class="form-field form-field--full">
+              <label class="form-field__label" for="contactMessage">הודעה</label>
+              <input class="form-field__input" type="text" id="contactMessage" placeholder="ספרו לנו במה נוכל לעזור">
+            </div>
+            <button type="submit" class="btn btn--primary btn--large location-section__submit">שלחו הודעה</button>
+          </form>
+        </div>
+
+        <!-- Left Column: Map & details side-by-side -->
+        <div class="location-section__info">
+          <div class="location-section__details">
+            <div class="info-item">
+              <h4 class="info-item__label">כתובתנו</h4>
+              <p class="info-item__value">אהבת ציון 18<br>בית שאן, ישראל</p>
+            </div>
+            <div class="info-item">
+              <h4 class="info-item__label">טלפון</h4>
+              <p class="info-item__value"><a href="tel:+972505359750">050-535-9750</a></p>
+            </div>
+            <div class="info-item">
+              <h4 class="info-item__label">דוא״ל</h4>
+              <p class="info-item__value"><a href="mailto:yosieden000@gmail.com">yosieden000@gmail.com</a></p>
+            </div>
+          </div>
+          <div class="location-section__map">
+            <iframe src="https://www.google.com/maps?q=%D7%90%D7%94%D7%91%D7%AA+%D7%A6%D7%99%D7%95%D7%9F+18+%D7%91%D7%99%D7%AA+%D7%A9%D7%90%D7%9F+%D7%99%D7%A9%D7%A8%D7%90%D7%9C&output=embed" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="מיקום בונה הירדן המערבי — בית שאן"></iframe>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ FOOTER ═══ -->
+  <footer class="footer" id="footer">
+    <div class="container">
+      <div class="footer__grid">
+        <div>
+          <div class="footer__logo">בונה הירדן המערבי</div>
+          <p class="footer__address">אהבת ציון 18<br>בית שאן, ישראל</p>
+        </div>
+        <div>
+          <div class="footer__col-title">ניווט</div>
+          <div class="footer__links">
+            <a href="#hero">עמוד הבית</a><a href="#projects">פרויקטים</a><a href="#about">אודות</a><a href="#services">תיבת נוח</a>
+          </div>
+        </div>
+        <div>
+          <div class="footer__col-title">שירותים</div>
+          <div class="footer__links">
+            <a href="accessibility.html">הצהרת נגישות</a><a href="terms.html">תנאי שימוש</a><a href="privacy.html">מדיניות פרטיות</a>
+          </div>
+        </div>
+        <div>
+          <div class="footer__col-title">צרו קשר</div>
+          <div class="footer__links">
+            <a href="tel:+972505359750">050-535-9750</a><a href="mailto:yosieden000@gmail.com">yosieden000@gmail.com</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer__bottom"><span>© 2026 בונה הירדן המערבי. כל הזכויות שמורות.</span><span>עיצוב ופיתוח — ohav's studio 2026</span></div>
+    </div>
+  </footer>
+
+  <!-- ═══ A11Y ═══ -->
+  <button class="a11y-btn" id="a11yBtn" aria-label="תפריט נגישות" title="נגישות"><svg viewBox="0 0 100 100" fill="currentColor" width="24" height="24"><path d="M40,20C40,14.475,44.475,10,50,10C55.525,10,60,14.475,60,20C60,25.525,55.525,30,50,30C44.475,30,40,25.525,40,20Z" /><path d="M74.65,75.32C75.11,74.32,75.13,73.13,74.6,72.07L67.1,57.07C66.47,55.8,65.17,55,63.75,55L58.22,55C57.23,54.12,56.15,53.35,55,52.69L55,45C55,38.096,49.404,32.5,42.5,32.5C41.771,32.504,41.039,32.825,40.548,33.438L34.768,40.663C33.955,37.407,31.008,35,27.5,35L20,35L20,40L27.5,40C28.88,40,30,41.12,30,42.5L30,56.78C26.89,60.31,25,64.93,25,70C25,81.05,33.95,90,45,90C52.4,90,58.86,85.98,62.31,80L65,80L65,82.5C65,86.64,68.36,90,72.5,90S80,86.64,80,82.5C80,79.11,77.74,76.24,74.65,75.32ZM40,42.127L40,50.63C39.32,50.8,38.66,51.01,38.01,51.26L35.593,47.635L40,42.127ZM45,85C36.729,85,30,78.271,30,70C30,64.954,32.512,60.492,36.343,57.772L40.42,63.887C40.901,64.609,41.694,65,42.502,65C42.979,65,43.461,64.864,43.887,64.58C45.035,63.814,45.346,62.262,44.58,61.113L40.895,55.585C42.201,55.212,43.575,55,45,55C53.271,55,60,61.729,60,70S53.271,85,45,85ZM64.37,75C64.78,73.4,65,71.72,65,70C65,69.87,65,69.74,64.99,69.61L67.68,75L64.37,75ZM72.5,85C71.119,85,70,83.881,70,82.5C70,81.119,71.119,80,72.5,80S75,81.119,75,82.5C75,83.881" /></svg></button>
+  <div class="a11y-panel" id="a11yPanel" role="dialog" aria-label="אפשרויות נגישות" aria-hidden="true">
+    <div class="a11y-panel__header"><span class="a11y-panel__title">נגישות</span><button class="a11y-panel__close" id="a11yClose" aria-label="סגור תפריט נגישות">&times;</button></div>
+    <div class="a11y-panel__body">
+      <button class="a11y-option" data-action="increase-font"><span class="a11y-option__icon">א+</span><span class="a11y-option__label">הגדלת גופן</span></button>
+      <button class="a11y-option" data-action="decrease-font"><span class="a11y-option__icon">א-</span><span class="a11y-option__label">הקטנת גופן</span></button>
+      <button class="a11y-option" data-action="high-contrast"><span class="a11y-option__icon">◑</span><span class="a11y-option__label">ניגודיות גבוהה</span></button>
+      <button class="a11y-option" data-action="grayscale"><span class="a11y-option__icon">◐</span><span class="a11y-option__label">גווני אפור</span></button>
+      <button class="a11y-option" data-action="underline-links"><span class="a11y-option__icon">U</span><span class="a11y-option__label">הדגשת קישורים</span></button>
+      <button class="a11y-option" data-action="readable-font"><span class="a11y-option__icon">Aa</span><span class="a11y-option__label">גופן קריא</span></button>
+      <button class="a11y-option" data-action="stop-animations"><span class="a11y-option__icon">⏸</span><span class="a11y-option__label">עצירת אנימציות</span></button>
+      <button class="a11y-option a11y-option--reset" data-action="reset"><span class="a11y-option__icon">↺</span><span class="a11y-option__label">איפוס</span></button>
+    </div>
+    <a href="accessibility.html" class="a11y-panel__link">הצהרת נגישות מלאה</a>
+  </div>
+
+  <!-- ═══ Firebase SDK ═══ -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-storage-compat.js"></script>
+  <script src="firebase-config.js"></script>
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+  <script src="main.js"></script>
+  <script>AOS.init({ duration: 800, offset: 80, once: true, easing: 'ease-out-cubic' });</script>
+</body>
+</html>

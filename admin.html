@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ניהול | בונה הירדן המערבי</title>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="fonts.css">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--brown:#543945;--brown-l:#6B4D5C;--cream:#FAF7F2;--cream-d:#F0EBE3;--cream-dd:#E8E2D8;--white:#fff;--green:#4CAF50;--red:#E53935;--blue:#2196F3;--radius:0.75rem;--radius-lg:1.25rem}
+html{direction:rtl}
+body{font-family:'Heebo',sans-serif;background:var(--cream);color:var(--brown);min-height:100vh}
+
+/* Login */
+.login-wrap{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:1rem}
+.login-card{background:var(--white);border-radius:var(--radius-lg);padding:3rem 2.5rem;width:100%;max-width:400px;box-shadow:0 12px 48px rgba(0,0,0,0.08);text-align:center}
+.login-card h1{font-size:1.5rem;font-weight:700;margin-bottom:0.5rem}
+.login-card p{color:var(--brown-l);font-size:0.9rem;margin-bottom:2rem}
+.login-input{width:100%;height:3.5rem;padding:0 1rem;border:2px solid var(--cream-dd);border-radius:var(--radius);font-size:1rem;text-align:center;letter-spacing:0.2em;transition:border 0.3s;direction:ltr}
+.login-input:focus{border-color:var(--brown);outline:none}
+.login-btn{width:100%;height:3.5rem;margin-top:1rem;background:var(--brown);color:var(--white);border:none;border-radius:4px;font-size:1rem;font-weight:600;cursor:pointer;transition:all 0.3s}
+.login-btn:hover{background:var(--brown-l)}
+.login-btn:disabled{opacity:0.5;cursor:not-allowed}
+.login-error{color:var(--red);font-size:0.85rem;margin-top:0.75rem;min-height:1.5rem}
+.login-lockout{color:var(--red);font-weight:600}
+
+/* Dashboard */
+.dashboard{display:none}
+.dash-layout{display:grid;grid-template-columns:260px 1fr;min-height:100vh}
+
+/* Sidebar */
+.sidebar{background:var(--brown);color:var(--white);padding:2rem 0;display:flex;flex-direction:column}
+.sidebar__logo{font-size:1.1rem;font-weight:700;padding:0 1.5rem;margin-bottom:2.5rem;opacity:0.9}
+.sidebar__nav{flex:1}
+.sidebar__link{display:flex;align-items:center;gap:0.75rem;padding:0.875rem 1.5rem;font-size:0.95rem;font-weight:500;color:rgba(255,255,255,0.7);cursor:pointer;transition:all 0.2s;border:none;width:100%;text-align:right;background:none;font-family:inherit}
+.sidebar__link:hover{color:var(--white);background:rgba(255,255,255,0.08)}
+.sidebar__link.active{color:var(--white);background:rgba(255,255,255,0.15);border-right:3px solid var(--white)}
+.sidebar__link svg{width:1.25rem;height:1.25rem;flex-shrink:0}
+.sidebar__logout{margin-top:auto;padding:0 1.5rem}
+.sidebar__logout-btn{width:100%;padding:0.75rem;border-radius:var(--radius);border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.7);font-size:0.85rem;cursor:pointer;background:none;font-family:inherit;transition:all 0.2s}
+.sidebar__logout-btn:hover{background:rgba(255,255,255,0.1);color:var(--white)}
+
+/* Main */
+.main{padding:2rem;overflow-y:auto;max-height:100vh}
+.main__header{display:flex;align-items:center;justify-content:space-between;margin-bottom:2rem}
+.main__title{font-size:1.75rem;font-weight:700}
+.main__btn{display:inline-flex;align-items:center;gap:0.5rem;height:3rem;padding:0 1.5rem;background:var(--brown);color:var(--white);border:none;border-radius:4px;font-size:0.9rem;font-weight:600;cursor:pointer;transition:all 0.25s;font-family:inherit}
+.main__btn:hover{background:var(--brown-l);transform:translateY(-1px)}
+.main__btn--outline{background:transparent;color:var(--brown);border:1px solid rgba(84,57,69,0.25)}
+.main__btn--outline:hover{background:var(--cream-d)}
+.main__btn--danger{background:var(--red);color:var(--white)}
+.main__btn--danger:hover{background:#C62828}
+
+/* Cards */
+.card{background:var(--white);border-radius:var(--radius-lg);padding:1.5rem;box-shadow:0 2px 12px rgba(0,0,0,0.04);margin-bottom:1rem}
+.card__header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem}
+.card__title{font-size:1rem;font-weight:600}
+
+/* Table */
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:0.9rem}
+th{text-align:right;padding:0.75rem 1rem;font-weight:600;color:var(--brown-l);border-bottom:2px solid var(--cream-dd);white-space:nowrap}
+td{padding:0.75rem 1rem;border-bottom:1px solid var(--cream-d);vertical-align:middle}
+tr:hover td{background:var(--cream)}
+.status-badge{display:inline-block;padding:0.25rem 0.75rem;border-radius:4px;font-size:0.75rem;font-weight:600}
+.status-badge--marketing{background:#E8F5E9;color:#2E7D32}
+.status-badge--sold{background:#FFF3E0;color:#E65100}
+.status-badge--building{background:#E3F2FD;color:#1565C0}
+.status-badge--planning{background:#F3E5F5;color:#7B1FA2}
+.actions-cell{display:flex;gap:0.5rem;flex-wrap:wrap}
+.btn-sm{padding:0.35rem 0.75rem;border-radius:var(--radius);font-size:0.8rem;font-weight:500;cursor:pointer;border:none;transition:all 0.2s;font-family:inherit}
+.btn-sm--edit{background:var(--cream-d);color:var(--brown)}
+.btn-sm--edit:hover{background:var(--cream-dd)}
+.btn-sm--delete{background:#FFEBEE;color:var(--red)}
+.btn-sm--delete:hover{background:#FFCDD2}
+
+/* Modal */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:1000;display:none;align-items:center;justify-content:center;padding:1rem}
+.modal-overlay.open{display:flex}
+.modal{background:var(--white);border-radius:var(--radius-lg);width:100%;max-width:640px;max-height:90vh;overflow-y:auto;box-shadow:0 24px 80px rgba(0,0,0,0.15)}
+.modal__header{display:flex;align-items:center;justify-content:space-between;padding:1.5rem 2rem;border-bottom:1px solid var(--cream-d)}
+.modal__title{font-size:1.25rem;font-weight:700}
+.modal__close{width:2.5rem;height:2.5rem;border-radius:50%;background:var(--cream-d);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1.25rem;border:none;transition:background 0.2s;font-family:inherit}
+.modal__close:hover{background:var(--cream-dd)}
+.modal__body{padding:2rem}
+.modal__footer{display:flex;gap:1rem;justify-content:flex-start;padding:1.5rem 2rem;border-top:1px solid var(--cream-d)}
+
+/* Form fields */
+.field{margin-bottom:1.5rem}
+.field label{display:block;font-size:0.8rem;font-weight:600;margin-bottom:0.5rem;color:var(--brown-l)}
+.field input,.field select,.field textarea{width:100%;padding:0.75rem 1rem;border:2px solid var(--cream-dd);border-radius:var(--radius);font-size:0.95rem;transition:border 0.3s;font-family:inherit;background:var(--white);color:var(--brown)}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--brown);outline:none}
+.field textarea{resize:vertical;min-height:100px}
+.field-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem}
+
+/* Image upload */
+.img-upload{border:2px dashed var(--cream-dd);border-radius:var(--radius-lg);padding:2rem;text-align:center;cursor:pointer;transition:all 0.3s;position:relative}
+.img-upload:hover{border-color:var(--brown);background:var(--cream)}
+.img-upload input{position:absolute;inset:0;opacity:0;cursor:pointer}
+.img-upload__label{font-size:0.9rem;color:var(--brown-l)}
+.img-upload__preview{margin-top:1rem;display:flex;gap:0.75rem;flex-wrap:wrap}
+.img-upload__thumb{width:80px;height:80px;border-radius:var(--radius);overflow:hidden;position:relative}
+.img-upload__thumb img{width:100%;height:100%;object-fit:cover}
+.img-upload__thumb-remove{position:absolute;top:2px;right:2px;width:1.25rem;height:1.25rem;background:var(--red);color:var(--white);border:none;border-radius:50%;font-size:0.7rem;cursor:pointer;display:flex;align-items:center;justify-content:center}
+
+/* Toast */
+.toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(100px);padding:1rem 2rem;border-radius:var(--radius);font-size:0.95rem;font-weight:500;z-index:2000;transition:transform 0.4s cubic-bezier(0.16,1,0.3,1);box-shadow:0 8px 32px rgba(0,0,0,0.15)}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.toast--success{background:#2E7D32;color:var(--white)}
+.toast--error{background:var(--red);color:var(--white)}
+
+/* Confirm modal */
+.confirm{text-align:center;padding:2rem}
+.confirm__icon{font-size:3rem;margin-bottom:1rem}
+.confirm__text{font-size:1rem;color:var(--brown-l);margin-bottom:1.5rem}
+.confirm__buttons{display:flex;gap:1rem;justify-content:center}
+
+/* Lead card */
+.lead-card{background:var(--white);border-radius:var(--radius);padding:1.25rem;border:1px solid var(--cream-dd);transition:all 0.2s}
+.lead-card:hover{border-color:var(--brown-l);box-shadow:0 4px 16px rgba(0,0,0,0.06)}
+.lead-card__name{font-weight:600;font-size:1rem;margin-bottom:0.25rem}
+.lead-card__phone{color:var(--blue);font-size:0.9rem;margin-bottom:0.25rem}
+.lead-card__message{color:var(--brown-l);font-size:0.85rem;margin-bottom:0.5rem}
+.lead-card__date{font-size:0.75rem;color:rgba(84,57,69,0.5)}
+.leads-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem}
+
+/* Mobile toggle */
+.mobile-toggle{display:none;position:fixed;top:1rem;right:1rem;z-index:500;width:3rem;height:3rem;border-radius:50%;background:var(--brown);color:var(--white);border:none;cursor:pointer;font-size:1.25rem;box-shadow:0 4px 16px rgba(0,0,0,0.2)}
+
+/* Page sections */
+.page{display:none}
+.page.active{display:block}
+
+/* Responsive */
+@media(max-width:768px){
+  .dash-layout{grid-template-columns:1fr}
+  .sidebar{position:fixed;inset:0;z-index:400;transform:translateX(100%);transition:transform 0.35s cubic-bezier(0.16,1,0.3,1);padding-top:4rem}
+  .sidebar.open{transform:translateX(0)}
+  .mobile-toggle{display:flex;align-items:center;justify-content:center}
+  .main{padding:1rem;padding-top:4.5rem}
+  .main__header{flex-direction:column;gap:1rem;align-items:stretch}
+  .field-row{grid-template-columns:1fr}
+  .modal{max-width:100%;margin:0.5rem}
+  .leads-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ LOGIN ═══ -->
+<div class="login-wrap" id="loginWrap">
+  <div class="login-card">
+    <h1>ניהול האתר</h1>
+    <p>הזינו את סיסמת הניהול</p>
+    <input type="password" class="login-input" id="loginPassword" placeholder="••••" maxlength="20" autocomplete="off">
+    <button class="login-btn" id="loginBtn">כניסה</button>
+    <div class="login-error" id="loginError"></div>
+  </div>
+</div>
+
+<!-- ═══ DASHBOARD ═══ -->
+<div class="dashboard" id="dashboard">
+  <button class="mobile-toggle" id="mobileToggle">☰</button>
+
+  <div class="dash-layout">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar__logo">🏗️ ניהול — בונה הירדן</div>
+      <nav class="sidebar__nav">
+        <button class="sidebar__link active" data-page="projects">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          פרויקטים
+        </button>
+        <button class="sidebar__link" data-page="leads">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+          לידים
+        </button>
+        <button class="sidebar__link" data-page="settings">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.73 12.73l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+          הגדרות
+        </button>
+      </nav>
+      <div class="sidebar__logout">
+        <button class="sidebar__logout-btn" id="logoutBtn">יציאה מהמערכת</button>
+      </div>
+    </aside>
+
+    <main class="main">
+      <!-- ═══ PROJECTS PAGE ═══ -->
+      <div class="page active" id="page-projects">
+        <div class="main__header">
+          <h2 class="main__title">פרויקטים</h2>
+          <button class="main__btn" id="addProjectBtn">+ הוסף פרויקט</button>
+        </div>
+        <div class="card">
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>תמונה</th><th>שם</th><th>מיקום</th><th>סטטוס</th><th>פעולות</th></tr></thead>
+              <tbody id="projectsTableBody"><tr><td colspan="5" style="text-align:center;padding:2rem;color:var(--brown-l)">טוען...</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ LEADS PAGE ═══ -->
+      <div class="page" id="page-leads">
+        <div class="main__header">
+          <h2 class="main__title">לידים</h2>
+          <span id="leadsCount" style="color:var(--brown-l);font-size:0.9rem"></span>
+        </div>
+        <div class="leads-grid" id="leadsGrid"><p style="color:var(--brown-l)">טוען...</p></div>
+      </div>
+
+      <!-- ═══ SETTINGS PAGE ═══ -->
+      <div class="page" id="page-settings">
+        <div class="main__header"><h2 class="main__title">הגדרות</h2></div>
+        <div class="card" style="max-width:500px">
+          <h3 style="font-size:1rem;font-weight:600;margin-bottom:1.5rem">שינוי סיסמה</h3>
+          <div class="field"><label>סיסמה חדשה</label><input type="password" id="newPassword" placeholder="הזינו סיסמה חדשה"></div>
+          <div class="field"><label>אישור סיסמה</label><input type="password" id="confirmPassword" placeholder="הזינו שוב"></div>
+          <button class="main__btn" id="changePasswordBtn">עדכן סיסמה</button>
+        </div>
+        <div class="card" style="max-width:500px;margin-top:2rem">
+          <h3 style="font-size:1rem;font-weight:600;margin-bottom:1.5rem">פונט גלובלי לאתר</h3>
+          <div class="field">
+            <label>בחירת פונט</label>
+            <select id="selectedFont">
+              <option value="" style="font-family:'Heebo', sans-serif">ברירת מחדל (Heebo / Space Grotesk / DM Sans)</option>
+              <option value="Bamberger" style="font-family:'Bamberger', sans-serif">Bamberger (במברגר)</option>
+              <option value="Discovery" style="font-family:'Discovery', sans-serif">Discovery (דיסקברי)</option>
+              <option value="Duckas" style="font-family:'Duckas', sans-serif">Duckas (דוקאס)</option>
+              <option value="Font Galil - V2" style="font-family:'Font Galil - V2', sans-serif">Font Galil - V2 (גליל)</option>
+              <option value="Krisperv" style="font-family:'Krisperv', sans-serif">Krisperv (קריספרב)</option>
+              <option value="Leon" style="font-family:'Leon', sans-serif">Leon (לאון)</option>
+              <option value="LiaKahaItorarti-Regular" style="font-family:'LiaKahaItorarti-Regular', sans-serif">LiaKahaItorarti (ליה כהא)</option>
+              <option value="Motaleh" style="font-family:'Motaleh', sans-serif">Motaleh (מוטאלה)</option>
+              <option value="Placebo" style="font-family:'Placebo', sans-serif">Placebo (פלסבו)</option>
+              <option value="Primaries" style="font-family:'Primaries', sans-serif">Primaries (פריימריז)</option>
+              <option value="Proxima Nova Hebrew" style="font-family:'Proxima Nova Hebrew', sans-serif">Proxima Nova Hebrew (פרוקסימה נובה)</option>
+              <option value="RagMaromPoster" style="font-family:'RagMaromPoster', sans-serif">RagMaromPoster (רעג מרום פוסטר)</option>
+              <option value="Ravitzky" style="font-family:'Ravitzky', sans-serif">Ravitzky (רביצקי)</option>
+              <option value="taamula" style="font-family:'taamula', sans-serif">taamula (תעמולה)</option>
+              <option value="Trampolina" style="font-family:'Trampolina', sans-serif">Trampolina (טרמפולינה)</option>
+              <option value="Zvulun" style="font-family:'Zvulun', sans-serif">Zvulun (זבולון)</option>
+            </select>
+          </div>
+          <button class="main__btn" id="saveFontBtn">עדכן פונט</button>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- ═══ PROJECT MODAL ═══ -->
+<div class="modal-overlay" id="projectModal">
+  <div class="modal">
+    <div class="modal__header">
+      <h3 class="modal__title" id="modalTitle">הוסף פרויקט</h3>
+      <button class="modal__close" id="modalClose">&times;</button>
+    </div>
+    <div class="modal__body">
+      <input type="hidden" id="editProjectId">
+      <div class="field"><label>שם הפרויקט</label><input type="text" id="pTitle" placeholder="לדוגמה: וילה בכוכב יאיר"></div>
+      <div class="field"><label>מיקום</label><input type="text" id="pLocation" placeholder="לדוגמה: כוכב יאיר"></div>
+      <div class="field"><label>תיאור</label><textarea id="pDescription" placeholder="תאור מפורט של הפרויקט"></textarea></div>
+      <div class="field-row" style="grid-template-columns: 1fr 1fr;">
+        <div class="field"><label>סטטוס</label><select id="pStatus"><option value="marketing">בשיווק</option><option value="building">בבנייה</option><option value="planning">בתכנון</option><option value="sold">נמכר</option><option value="occupied">מאוכלס</option></select></div>
+        <div class="field"><label>מחיר</label><input type="text" id="pPrice" placeholder="לא חובה"></div>
+      </div>
+      <div class="field-row">
+        <div class="field"><label>מ״ר</label><input type="number" id="pSqm" placeholder="0"></div>
+        <div class="field"><label>חדרי שינה</label><input type="number" id="pBeds" placeholder="0"></div>
+        <div class="field"><label>חדרי רחצה</label><input type="number" id="pBaths" placeholder="0"></div>
+      </div>
+      <div class="field">
+        <label>תמונה ראשית</label>
+        <div class="img-upload" id="mainImageUpload">
+          <input type="file" accept="image/*" id="mainImageInput">
+          <div class="img-upload__label">📷 גררו תמונה או לחצו לבחירה</div>
+          <div class="img-upload__preview" id="mainImagePreview"></div>
+        </div>
+      </div>
+      <div class="field">
+        <label>גלריה (ניתן לבחור מספר תמונות)</label>
+        <div class="img-upload" id="galleryUpload">
+          <input type="file" accept="image/*" multiple id="galleryInput">
+          <div class="img-upload__label">🖼️ גררו תמונות או לחצו לבחירה</div>
+          <div class="img-upload__preview" id="galleryPreview"></div>
+        </div>
+      </div>
+    </div>
+    <div class="modal__footer">
+      <button class="main__btn" id="saveProjectBtn">שמור</button>
+      <button class="main__btn main__btn--outline" id="cancelProjectBtn">ביטול</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ CONFIRM MODAL ═══ -->
+<div class="modal-overlay" id="confirmModal">
+  <div class="modal" style="max-width:400px">
+    <div class="confirm">
+      <div class="confirm__icon">⚠️</div>
+      <div class="confirm__text" id="confirmText">האם למחוק פרויקט זה?</div>
+      <div class="confirm__buttons">
+        <button class="main__btn main__btn--danger" id="confirmYes">מחק</button>
+        <button class="main__btn main__btn--outline" id="confirmNo">ביטול</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ TOAST ═══ -->
+<div class="toast" id="toast"></div>
+
+<!-- ═══ Firebase SDK ═══ -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-storage-compat.js"></script>
+<script src="firebase-config.js"></script>
+
+<script>
+(function() {
+  'use strict';
+
+  // Apply cached font immediately to prevent FOUT
+  const cachedFont = localStorage.getItem('selectedFont');
+  if (cachedFont) {
+    document.documentElement.style.setProperty('--font-heading', `'${cachedFont}', 'Heebo', sans-serif`);
+    document.documentElement.style.setProperty('--font-body', `'${cachedFont}', 'Heebo', sans-serif`);
+    document.addEventListener('DOMContentLoaded', () => {
+      document.body.style.fontFamily = `'${cachedFont}', 'Heebo', sans-serif`;
+    });
+  }
+
+  const SESSION_KEY = 'bone_admin_session';
+  const SESSION_DURATION = 4 * 60 * 60 * 1000; // 4 hours
+  const MAX_ATTEMPTS = 5;
+  const LOCKOUT_MS = 5 * 60 * 1000; // 5 minutes
+
+  const statusMap = { marketing: 'בשיווק', sold: 'נמכר', building: 'בבנייה', planning: 'בתכנון', occupied: 'מאוכלס' };
+
+  /* ═══ SESSION ═══ */
+  function isLoggedIn() {
+    const session = JSON.parse(sessionStorage.getItem(SESSION_KEY) || 'null');
+    if (!session) return false;
+    if (Date.now() > session.expiry) { sessionStorage.removeItem(SESSION_KEY); return false; }
+    return true;
+  }
+
+  function createSession() {
+    sessionStorage.setItem(SESSION_KEY, JSON.stringify({ token: crypto.randomUUID(), expiry: Date.now() + SESSION_DURATION }));
+  }
+
+  function destroySession() {
+    sessionStorage.removeItem(SESSION_KEY);
+    location.reload();
+  }
+
+  /* ═══ RATE LIMITING ═══ */
+  function getAttempts() {
+    const data = JSON.parse(localStorage.getItem('bone_login_attempts') || '{"count":0,"lockUntil":0}');
+    if (Date.now() > data.lockUntil) { data.count = 0; data.lockUntil = 0; }
+    return data;
+  }
+
+  function recordAttempt(success) {
+    if (success) { localStorage.removeItem('bone_login_attempts'); return; }
+    const data = getAttempts();
+    data.count++;
+    if (data.count >= MAX_ATTEMPTS) data.lockUntil = Date.now() + LOCKOUT_MS;
+    localStorage.setItem('bone_login_attempts', JSON.stringify(data));
+  }
+
+  /* ═══ HASHING ═══ */
+  async function sha256(text) {
+    const encoded = new TextEncoder().encode(text);
+    const hash = await crypto.subtle.digest('SHA-256', encoded);
+    return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2, '0')).join('');
+  }
+
+  /* ═══ IMAGE COMPRESSION ═══ */
+  async function compressImage(file, maxWidth = 1200, quality = 0.8) {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        let w = img.width, h = img.height;
+        if (w > maxWidth) { h = (maxWidth / w) * h; w = maxWidth; }
+        canvas.width = w; canvas.height = h;
+        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+        canvas.toBlob(blob => {
+          if (blob) resolve(blob); else reject(new Error('Compression failed'));
+        }, 'image/webp', quality);
+      };
+      img.onerror = reject;
+      img.src = URL.createObjectURL(file);
+    });
+  }
+
+  async function uploadImage(file, path) {
+    const compressed = await compressImage(file);
+    const filename = Date.now() + '_' + file.name.replace(/\.[^.]+$/, '.webp');
+    const ref = storage.ref().child(path + '/' + filename);
+    await ref.put(compressed, { contentType: 'image/webp' });
+    return await ref.getDownloadURL();
+  }
+
+  /* ═══ TOAST ═══ */
+  function showToast(msg, type = 'success') {
+    const toast = document.getElementById('toast');
+    toast.textContent = msg;
+    toast.className = 'toast toast--' + type + ' show';
+    setTimeout(() => toast.classList.remove('show'), 3000);
+  }
+
+  /* ═══ INIT ═══ */
+  const loginWrap = document.getElementById('loginWrap');
+  const dashboard = document.getElementById('dashboard');
+
+  if (isLoggedIn()) {
+    loginWrap.style.display = 'none';
+    dashboard.style.display = 'block';
+    initDashboard();
+  }
+
+  /* ═══ LOGIN ═══ */
+  const loginBtn = document.getElementById('loginBtn');
+  const loginPassword = document.getElementById('loginPassword');
+  const loginError = document.getElementById('loginError');
+
+  loginBtn.addEventListener('click', handleLogin);
+  loginPassword.addEventListener('keydown', e => { if (e.key === 'Enter') handleLogin(); });
+
+  async function handleLogin() {
+    const attempts = getAttempts();
+    if (attempts.lockUntil > Date.now()) {
+      const remaining = Math.ceil((attempts.lockUntil - Date.now()) / 1000);
+      loginError.innerHTML = `<span class="login-lockout">נחסם ל-${remaining} שניות</span>`;
+      return;
+    }
+
+    const pwd = loginPassword.value.trim();
+    if (!pwd) { loginError.textContent = 'הזינו סיסמה'; return; }
+
+    loginBtn.disabled = true;
+    loginBtn.textContent = 'בודק...';
+
+    try {
+      const doc = await db.collection('settings').doc('admin').get();
+      if (!doc.exists) { loginError.textContent = 'שגיאת מערכת'; return; }
+
+      const stored = doc.data().password;
+      const inputHash = await sha256(pwd);
+
+      let valid = false;
+      if (stored === pwd) {
+        /* Plaintext — upgrade to hash */
+        await db.collection('settings').doc('admin').update({ password: inputHash });
+        valid = true;
+      } else if (stored === inputHash) {
+        valid = true;
+      }
+
+      if (valid) {
+        recordAttempt(true);
+        createSession();
+        loginWrap.style.display = 'none';
+        dashboard.style.display = 'block';
+        initDashboard();
+      } else {
+        recordAttempt(false);
+        const att = getAttempts();
+        loginError.textContent = `סיסמה שגויה (${att.count}/${MAX_ATTEMPTS})`;
+      }
+    } catch (err) {
+      console.error(err);
+      loginError.textContent = 'שגיאה בהתחברות';
+    } finally {
+      loginBtn.disabled = false;
+      loginBtn.textContent = 'כניסה';
+    }
+  }
+
+  /* ═══ DASHBOARD INIT ═══ */
+  function initDashboard() {
+    setupNavigation();
+    loadProjects();
+    loadLeads();
+    setupProjectModal();
+    setupSettings();
+    setupMobileToggle();
+  }
+
+  /* ═══ NAVIGATION ═══ */
+  function setupNavigation() {
+    document.querySelectorAll('.sidebar__link').forEach(link => {
+      link.addEventListener('click', () => {
+        document.querySelectorAll('.sidebar__link').forEach(l => l.classList.remove('active'));
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        link.classList.add('active');
+        document.getElementById('page-' + link.dataset.page).classList.add('active');
+        /* Close sidebar on mobile */
+        document.getElementById('sidebar').classList.remove('open');
+      });
+    });
+    document.getElementById('logoutBtn').addEventListener('click', destroySession);
+  }
+
+  function setupMobileToggle() {
+    const toggle = document.getElementById('mobileToggle');
+    const sidebar = document.getElementById('sidebar');
+    toggle.addEventListener('click', () => sidebar.classList.toggle('open'));
+  }
+
+  /* ═══ PROJECTS ═══ */
+  let allProjects = [];
+
+  async function loadProjects() {
+    const tbody = document.getElementById('projectsTableBody');
+    try {
+      const snapshot = await db.collection('projects').get();
+      allProjects = [];
+      snapshot.forEach(doc => allProjects.push({ id: doc.id, ...doc.data() }));
+      renderProjectsTable();
+    } catch (err) {
+      console.error(err);
+      tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--red)">שגיאה בטעינה</td></tr>';
+    }
+  }
+
+  function renderProjectsTable() {
+    const tbody = document.getElementById('projectsTableBody');
+    if (!allProjects.length) {
+      tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--brown-l);padding:2rem">אין פרויקטים</td></tr>';
+      return;
+    }
+    tbody.innerHTML = allProjects.map(p => `
+      <tr>
+        <td><img src="${p.imageUrl}" style="width:60px;height:40px;object-fit:cover;border-radius:6px" alt="${p.title}"></td>
+        <td><strong>${p.title}</strong></td>
+        <td>${p.location}</td>
+        <td><span class="status-badge status-badge--${p.status}">${statusMap[p.status] || p.status}</span></td>
+        <td><div class="actions-cell">
+          <button class="btn-sm btn-sm--edit" onclick="editProject('${p.id}')">✏️ ערוך</button>
+          <button class="btn-sm btn-sm--delete" onclick="deleteProject('${p.id}','${p.title}')">🗑️ מחק</button>
+        </div></td>
+      </tr>
+    `).join('');
+  }
+
+  /* ═══ PROJECT MODAL ═══ */
+  const projectModal = document.getElementById('projectModal');
+  const confirmModal = document.getElementById('confirmModal');
+  let mainImageFile = null;
+  let galleryFiles = [];
+  let existingGallery = [];
+
+  function setupProjectModal() {
+    document.getElementById('addProjectBtn').addEventListener('click', () => openProjectModal());
+    document.getElementById('modalClose').addEventListener('click', closeProjectModal);
+    document.getElementById('cancelProjectBtn').addEventListener('click', closeProjectModal);
+    document.getElementById('saveProjectBtn').addEventListener('click', saveProject);
+
+    document.getElementById('mainImageInput').addEventListener('change', e => {
+      mainImageFile = e.target.files[0];
+      const preview = document.getElementById('mainImagePreview');
+      if (mainImageFile) {
+        preview.innerHTML = `<div class="img-upload__thumb"><img src="${URL.createObjectURL(mainImageFile)}"></div>`;
+      }
+    });
+
+    document.getElementById('galleryInput').addEventListener('change', e => {
+      galleryFiles = [...galleryFiles, ...Array.from(e.target.files)];
+      renderGalleryPreview();
+    });
+  }
+
+  function renderGalleryPreview() {
+    const preview = document.getElementById('galleryPreview');
+    const existing = existingGallery.map((url, i) =>
+      `<div class="img-upload__thumb"><img src="${url}"><button class="img-upload__thumb-remove" onclick="removeExistingGalleryImage(${i})">×</button></div>`
+    ).join('');
+    const newFiles = galleryFiles.map((f, i) =>
+      `<div class="img-upload__thumb"><img src="${URL.createObjectURL(f)}"><button class="img-upload__thumb-remove" onclick="removeGalleryFile(${i})">×</button></div>`
+    ).join('');
+    preview.innerHTML = existing + newFiles;
+  }
+
+  window.removeGalleryFile = (i) => { galleryFiles.splice(i, 1); renderGalleryPreview(); };
+  window.removeExistingGalleryImage = (i) => { existingGallery.splice(i, 1); renderGalleryPreview(); };
+
+  function openProjectModal(project = null) {
+    mainImageFile = null;
+    galleryFiles = [];
+    existingGallery = [];
+    document.getElementById('mainImagePreview').innerHTML = '';
+    document.getElementById('galleryPreview').innerHTML = '';
+
+    if (project) {
+      document.getElementById('modalTitle').textContent = 'עריכת פרויקט';
+      document.getElementById('editProjectId').value = project.id;
+      document.getElementById('pTitle').value = project.title || '';
+      document.getElementById('pLocation').value = project.location || '';
+      document.getElementById('pDescription').value = project.description || '';
+      document.getElementById('pStatus').value = project.status || 'marketing';
+      document.getElementById('pPrice').value = project.price || '';
+      document.getElementById('pSqm').value = project.specs?.sqm || '';
+      document.getElementById('pBeds').value = project.specs?.beds || '';
+      document.getElementById('pBaths').value = project.specs?.baths || '';
+      if (project.imageUrl) {
+        document.getElementById('mainImagePreview').innerHTML = `<div class="img-upload__thumb"><img src="${project.imageUrl}"></div>`;
+      }
+      existingGallery = project.gallery ? [...project.gallery] : [];
+      renderGalleryPreview();
+    } else {
+      document.getElementById('modalTitle').textContent = 'הוסף פרויקט';
+      document.getElementById('editProjectId').value = '';
+      ['pTitle','pLocation','pDescription','pPrice','pSqm','pBeds','pBaths'].forEach(id => document.getElementById(id).value = '');
+      document.getElementById('pStatus').value = 'marketing';
+    }
+    projectModal.classList.add('open');
+  }
+
+  function closeProjectModal() { projectModal.classList.remove('open'); }
+
+  async function saveProject() {
+    const title = document.getElementById('pTitle').value.trim();
+    const location = document.getElementById('pLocation').value.trim();
+    if (!title || !location) { showToast('שם ומיקום הם שדות חובה', 'error'); return; }
+
+    const saveBtn = document.getElementById('saveProjectBtn');
+    saveBtn.disabled = true;
+    saveBtn.textContent = 'שומר...';
+
+    try {
+      const editId = document.getElementById('editProjectId').value;
+      let imageUrl = '';
+
+      /* Upload main image */
+      if (mainImageFile) {
+        imageUrl = await uploadImage(mainImageFile, 'projects');
+      } else if (editId) {
+        const existing = allProjects.find(p => p.id === editId);
+        imageUrl = existing?.imageUrl || '';
+      }
+
+      /* Upload gallery */
+      const galleryUrls = [...existingGallery];
+      for (const file of galleryFiles) {
+        const url = await uploadImage(file, 'gallery');
+        galleryUrls.push(url);
+      }
+
+      const data = {
+        title,
+        location,
+        description: document.getElementById('pDescription').value.trim(),
+        status: document.getElementById('pStatus').value,
+        price: document.getElementById('pPrice').value.trim(),
+        imageUrl,
+        gallery: galleryUrls,
+        specs: {
+          sqm: parseInt(document.getElementById('pSqm').value) || 0,
+          beds: parseInt(document.getElementById('pBeds').value) || 0,
+          baths: parseInt(document.getElementById('pBaths').value) || 0
+        }
+      };
+
+      if (editId) {
+        await db.collection('projects').doc(editId).update(data);
+        showToast('פרויקט עודכן בהצלחה');
+      } else {
+        await db.collection('projects').add(data);
+        showToast('פרויקט נוסף בהצלחה');
+      }
+
+      closeProjectModal();
+      loadProjects();
+    } catch (err) {
+      console.error(err);
+      showToast('שגיאה בשמירה: ' + err.message, 'error');
+    } finally {
+      saveBtn.disabled = false;
+      saveBtn.textContent = 'שמור';
+    }
+  }
+
+  /* ═══ EDIT / DELETE ═══ */
+  window.editProject = (id) => {
+    const project = allProjects.find(p => p.id === id);
+    if (project) openProjectModal(project);
+  };
+
+  let pendingDeleteId = null;
+  window.deleteProject = (id, title) => {
+    pendingDeleteId = id;
+    document.getElementById('confirmText').textContent = `האם למחוק את "${title}"?`;
+    confirmModal.classList.add('open');
+  };
+
+  document.getElementById('confirmNo').addEventListener('click', () => confirmModal.classList.remove('open'));
+  document.getElementById('confirmYes').addEventListener('click', async () => {
+    if (!pendingDeleteId) return;
+    try {
+      await db.collection('projects').doc(pendingDeleteId).delete();
+      showToast('פרויקט נמחק');
+      loadProjects();
+    } catch (err) {
+      showToast('שגיאה במחיקה', 'error');
+    }
+    confirmModal.classList.remove('open');
+    pendingDeleteId = null;
+  });
+
+  /* ═══ LEADS ═══ */
+  async function loadLeads() {
+    const grid = document.getElementById('leadsGrid');
+    const count = document.getElementById('leadsCount');
+    try {
+      const snapshot = await db.collection('leads').orderBy('createdAt', 'desc').get();
+      const leads = [];
+      snapshot.forEach(doc => leads.push({ id: doc.id, ...doc.data() }));
+      count.textContent = `${leads.length} לידים`;
+
+      if (!leads.length) {
+        grid.innerHTML = '<p style="color:var(--brown-l)">אין לידים</p>';
+        return;
+      }
+
+      grid.innerHTML = leads.map(l => {
+        const date = l.createdAt?.toDate ? l.createdAt.toDate().toLocaleDateString('he-IL', { day:'numeric', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' }) : '—';
+        const typeLabel = l.type === 'noah' 
+          ? '<span class="status-badge" style="background:#E3F2FD;color:#1565C0;margin-top:0.25rem;display:inline-block">תיבת נוח</span>' 
+          : (l.type === 'general' 
+            ? '<span class="status-badge" style="background:#FFF3E0;color:#E65100;margin-top:0.25rem;display:inline-block">צור קשר כללי</span>' 
+            : '');
+        return `
+          <div class="lead-card">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:0.5rem">
+              <div class="lead-card__name" style="margin:0">${l.name || '—'}</div>
+              ${typeLabel}
+            </div>
+            <div class="lead-card__phone"><a href="tel:${l.phone}">${l.phone || '—'}</a></div>
+            ${l.message ? `<div class="lead-card__message">"${l.message}"</div>` : ''}
+            <div class="lead-card__date">${date}</div>
+          </div>
+        `;
+      }).join('');
+    } catch (err) {
+      console.error(err);
+      grid.innerHTML = '<p style="color:var(--red)">שגיאה בטעינה</p>';
+    }
+  }
+
+  /* ═══ SETTINGS ═══ */
+  async function setupSettings() {
+    // 1. Fetch current font from Firestore
+    try {
+      const doc = await db.collection('settings').doc('admin').get();
+      if (doc.exists && doc.data().selectedFont) {
+        const font = doc.data().selectedFont;
+        document.getElementById('selectedFont').value = font;
+        applyFont(font);
+      }
+    } catch (err) {
+      console.error('Error loading font settings:', err);
+    }
+
+    // 2. Save font listener
+    document.getElementById('saveFontBtn').addEventListener('click', async () => {
+      const font = document.getElementById('selectedFont').value;
+      const saveFontBtn = document.getElementById('saveFontBtn');
+      const originalText = saveFontBtn.textContent;
+      saveFontBtn.textContent = 'שומר...';
+      saveFontBtn.disabled = true;
+
+      try {
+        await db.collection('settings').doc('admin').update({ selectedFont: font });
+        localStorage.setItem('selectedFont', font);
+        applyFont(font);
+        showToast('הפונט עודכן בהצלחה');
+      } catch (err) {
+        console.error(err);
+        showToast('שגיאה בשמירת הפונט', 'error');
+      } finally {
+        saveFontBtn.textContent = originalText;
+        saveFontBtn.disabled = false;
+      }
+    });
+
+    // 3. Password listener
+    document.getElementById('changePasswordBtn').addEventListener('click', async () => {
+      const newPwd = document.getElementById('newPassword').value.trim();
+      const confirmPwd = document.getElementById('confirmPassword').value.trim();
+      if (!newPwd) { showToast('הזינו סיסמה חדשה', 'error'); return; }
+      if (newPwd !== confirmPwd) { showToast('הסיסמאות אינן תואמות', 'error'); return; }
+      if (newPwd.length < 4) { showToast('סיסמה חייבת להיות לפחות 4 תווים', 'error'); return; }
+
+      try {
+        const hash = await sha256(newPwd);
+        await db.collection('settings').doc('admin').update({ password: hash });
+        showToast('סיסמה עודכנה בהצלחה');
+        document.getElementById('newPassword').value = '';
+        document.getElementById('confirmPassword').value = '';
+      } catch (err) {
+        showToast('שגיאה בעדכון', 'error');
+      }
+    });
+  }
+
+  function applyFont(fontName) {
+    if (fontName) {
+      document.documentElement.style.setProperty('--font-heading', `'${fontName}', 'Heebo', sans-serif`);
+      document.documentElement.style.setProperty('--font-body', `'${fontName}', 'Heebo', sans-serif`);
+      document.body.style.fontFamily = `'${fontName}', 'Heebo', sans-serif`;
+    } else {
+      document.documentElement.style.setProperty('--font-heading', '');
+      document.documentElement.style.setProperty('--font-body', '');
+      document.body.style.fontFamily = '';
+    }
+  }
+
+})();
+</script>
+</body>
+</html>
