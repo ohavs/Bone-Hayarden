@@ -4,6 +4,7 @@
     "ignore": [
       "firebase.json",
       "firestore.rules",
+      "storage.rules",
       "**/node_modules/**",
       "**/.git/**",
       "**/.gemini/**"
@@ -27,5 +28,8 @@
   },
   "firestore": {
     "rules": "firestore.rules"
+  },
+  "storage": {
+    "rules": "storage.rules"
   }
 }
