@@ -618,6 +618,29 @@ select.form-field__input {
 }
 .a11y-btn:hover { transform: scale(1.1); box-shadow: 0 6px 24px rgba(84,57,69,0.4); }
 .a11y-btn svg { width: 1.5rem; height: 1.5rem; }
+.a11y-badge {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  width: 1.25rem;
+  height: 1.25rem;
+  background-color: var(--color-pink-400);
+  color: var(--color-brown-500);
+  border-radius: 50%;
+  font-size: 0.75rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(84, 57, 69, 0.25);
+  animation: a11y-badge-pop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  pointer-events: none;
+  z-index: 10;
+}
+@keyframes a11y-badge-pop {
+  0% { transform: scale(0); }
+  100% { transform: scale(1); }
+}
 
 .a11y-panel {
   position: fixed; bottom: 6rem; left: 1.5rem; z-index: 9999;

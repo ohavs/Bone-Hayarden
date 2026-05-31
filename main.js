@@ -390,6 +390,36 @@
 
     let fontSize = 100;
 
+    function updateA11yBadge() {
+      let count = 0;
+      if (fontSize !== 100) count++;
+      if (document.body.classList.contains('a11y-high-contrast')) count++;
+      if (document.body.classList.contains('a11y-grayscale')) count++;
+      if (document.body.classList.contains('a11y-underline-links')) count++;
+      if (document.body.classList.contains('a11y-readable-font')) count++;
+      if (document.body.classList.contains('a11y-stop-animations')) count++;
+
+      let badge = a11yBtn.querySelector('.a11y-badge');
+      if (count > 0) {
+        if (badge) {
+          if (badge.textContent !== String(count)) {
+            badge.remove();
+            badge = null;
+          }
+        }
+        if (!badge) {
+          badge = document.createElement('span');
+          badge.className = 'a11y-badge';
+          a11yBtn.appendChild(badge);
+        }
+        badge.textContent = count;
+      } else {
+        if (badge) {
+          badge.remove();
+        }
+      }
+    }
+
     function saveA11yState() {
       const state = {
         fontSize: fontSize,
@@ -442,6 +472,7 @@
           console.error('Error loading a11y state:', e);
         }
       }
+      updateA11yBadge();
     }
 
     // Load state on startup
@@ -494,6 +525,7 @@
             localStorage.removeItem('a11y_state');
             break;
         }
+        updateA11yBadge();
       });
     });
   }
