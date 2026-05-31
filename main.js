@@ -420,6 +420,22 @@
       }
     }
 
+    function updateA11yUI() {
+      const increaseOpt = document.querySelector('.a11y-option[data-action="increase-font"]');
+      const decreaseOpt = document.querySelector('.a11y-option[data-action="decrease-font"]');
+      
+      if (increaseOpt) {
+        if (fontSize > 100) increaseOpt.classList.add('active');
+        else increaseOpt.classList.remove('active');
+      }
+      if (decreaseOpt) {
+        if (fontSize < 100) decreaseOpt.classList.add('active');
+        else decreaseOpt.classList.remove('active');
+      }
+      
+      updateA11yBadge();
+    }
+
     function saveA11yState() {
       const state = {
         fontSize: fontSize,
@@ -472,7 +488,7 @@
           console.error('Error loading a11y state:', e);
         }
       }
-      updateA11yBadge();
+      updateA11yUI();
     }
 
     // Load state on startup
@@ -525,7 +541,7 @@
             localStorage.removeItem('a11y_state');
             break;
         }
-        updateA11yBadge();
+        updateA11yUI();
       });
     });
   }

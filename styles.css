@@ -1150,3 +1150,35 @@ body.a11y-stop-animations *, body.a11y-stop-animations *::before, body.a11y-stop
     padding-right: 1.5rem;
   }
 }
+
+/* ══════════════════════════════════════════════════════════════════
+   ACCESSIBILITY COMPLIANCE (WCAG 2.1 AA / IS 5568)
+   ══════════════════════════════════════════════════════════════════ */
+
+/* Focus outlines for keyboard navigation */
+*:focus-visible {
+  outline: 2px solid var(--color-brown-500) !important;
+  outline-offset: 3px !important;
+}
+
+/* Skip link */
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--color-brown-500);
+  color: var(--color-white);
+  padding: 0.75rem 1.5rem;
+  border-bottom-left-radius: var(--radius-sm);
+  border-bottom-right-radius: var(--radius-sm);
+  z-index: 100000;
+  font-weight: 600;
+  font-size: 0.9rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: top 0.3s ease;
+}
+.skip-link:focus-visible {
+  top: 0;
+  outline: none !important;
+}

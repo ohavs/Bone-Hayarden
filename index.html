@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="styles.css?v=3.3">
 </head>
 <body>
+  <a href="#main-content" class="skip-link">דילוג לתוכן המרכזי</a>
 
   <!-- ═══ MOBILE OVERLAY ═══ -->
   <div class="mobile-overlay" id="mobileOverlay">
@@ -46,6 +47,7 @@
       </button>
     </div>
   </header>
+  <main id="main-content">
 
   <!-- ═══ HERO ═══ -->
   <section class="hero" id="hero">
@@ -306,6 +308,9 @@
               <label class="form-field__label" for="contactMessage">הודעה</label>
               <input class="form-field__input" type="text" id="contactMessage" placeholder="ספרו לנו במה נוכל לעזור">
             </div>
+            <div style="grid-column: 1 / -1; font-size: 0.8rem; color: var(--color-brown-400); margin-bottom: 1.5rem; opacity: 0.8;">
+              * שליחת הטופס מהווה הסכמה לכך שהפרטים נמסרים מרצונך החופשי לצורך טיפול בפנייתך, בהתאם ל<a href="privacy.html" style="text-decoration: underline; font-weight: 500;">מדיניות הפרטיות</a>.
+            </div>
             <button type="submit" class="btn btn--primary btn--large location-section__submit">שלחו הודעה</button>
           </form>
         </div>
@@ -333,6 +338,8 @@
       </div>
     </div>
   </section>
+
+  </main>
 
   <!-- ═══ FOOTER ═══ -->
   <footer class="footer" id="footer">
