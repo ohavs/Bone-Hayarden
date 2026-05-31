@@ -389,6 +389,64 @@
     });
 
     let fontSize = 100;
+
+    function saveA11yState() {
+      const state = {
+        fontSize: fontSize,
+        highContrast: document.body.classList.contains('a11y-high-contrast'),
+        grayscale: document.body.classList.contains('a11y-grayscale'),
+        underlineLinks: document.body.classList.contains('a11y-underline-links'),
+        readableFont: document.body.classList.contains('a11y-readable-font'),
+        stopAnimations: document.body.classList.contains('a11y-stop-animations')
+      };
+      localStorage.setItem('a11y_state', JSON.stringify(state));
+    }
+
+    function loadA11yState() {
+      const saved = localStorage.getItem('a11y_state');
+      if (saved) {
+        try {
+          const state = JSON.parse(saved);
+          if (state) {
+            if (state.fontSize) {
+              fontSize = state.fontSize;
+              document.documentElement.style.fontSize = fontSize + '%';
+            }
+            if (state.highContrast) {
+              document.body.classList.add('a11y-high-contrast');
+              const opt = document.querySelector('.a11y-option[data-action="high-contrast"]');
+              if (opt) opt.classList.add('active');
+            }
+            if (state.grayscale) {
+              document.body.classList.add('a11y-grayscale');
+              const opt = document.querySelector('.a11y-option[data-action="grayscale"]');
+              if (opt) opt.classList.add('active');
+            }
+            if (state.underlineLinks) {
+              document.body.classList.add('a11y-underline-links');
+              const opt = document.querySelector('.a11y-option[data-action="underline-links"]');
+              if (opt) opt.classList.add('active');
+            }
+            if (state.readableFont) {
+              document.body.classList.add('a11y-readable-font');
+              const opt = document.querySelector('.a11y-option[data-action="readable-font"]');
+              if (opt) opt.classList.add('active');
+            }
+            if (state.stopAnimations) {
+              document.body.classList.add('a11y-stop-animations');
+              const opt = document.querySelector('.a11y-option[data-action="stop-animations"]');
+              if (opt) opt.classList.add('active');
+            }
+          }
+        } catch (e) {
+          console.error('Error loading a11y state:', e);
+        }
+      }
+    }
+
+    // Load state on startup
+    loadA11yState();
+
     document.querySelectorAll('.a11y-option').forEach(option => {
       option.addEventListener('click', () => {
         const action = option.getAttribute('data-action');
@@ -396,36 +454,44 @@
           case 'increase-font':
             fontSize = Math.min(fontSize + 10, 150);
             document.documentElement.style.fontSize = fontSize + '%';
+            saveA11yState();
             break;
           case 'decrease-font':
             fontSize = Math.max(fontSize - 10, 70);
             document.documentElement.style.fontSize = fontSize + '%';
+            saveA11yState();
             break;
           case 'high-contrast':
             document.body.classList.toggle('a11y-high-contrast');
             option.classList.toggle('active');
+            saveA11yState();
             break;
           case 'grayscale':
             document.body.classList.toggle('a11y-grayscale');
             option.classList.toggle('active');
+            saveA11yState();
             break;
           case 'underline-links':
             document.body.classList.toggle('a11y-underline-links');
             option.classList.toggle('active');
+            saveA11yState();
             break;
           case 'readable-font':
             document.body.classList.toggle('a11y-readable-font');
             option.classList.toggle('active');
+            saveA11yState();
             break;
           case 'stop-animations':
             document.body.classList.toggle('a11y-stop-animations');
             option.classList.toggle('active');
+            saveA11yState();
             break;
           case 'reset':
             fontSize = 100;
             document.documentElement.style.fontSize = '';
             document.body.classList.remove('a11y-high-contrast', 'a11y-grayscale', 'a11y-underline-links', 'a11y-readable-font', 'a11y-stop-animations');
             document.querySelectorAll('.a11y-option.active').forEach(o => o.classList.remove('active'));
+            localStorage.removeItem('a11y_state');
             break;
         }
       });
