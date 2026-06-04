@@ -310,6 +310,20 @@
         submitBtn.style.backgroundColor = '#2E7D32';
         formEl.reset();
 
+        // Open WhatsApp with pre-filled message
+        const waMessage = [
+          'שלום, פניתי דרך האתר.',
+          '',
+          name    ? `שמי: ${name}`      : '',
+          phone   ? `טלפון: ${phone}`   : '',
+          message ? `הודעה: ${message}` : '',
+        ].filter(Boolean).join('\n');
+
+        window.open(
+          'https://wa.me/972505359750/?text=' + encodeURIComponent(waMessage),
+          '_blank'
+        );
+
         const drawer = formEl.closest('.service-row__drawer');
         if (drawer) {
           drawer.style.maxHeight = drawer.scrollHeight + 'px';
